@@ -11,6 +11,9 @@ Set NS = Application.GetNamespace("MAPI")
 
 Dim totalduration As Integer
 totalduration = 0
+Dim smalltasks, bigtasks As Integer
+smalltasks = 0
+bigtasks = 0
 While Not table.EndOfTable
     Dim Entry As String
     
@@ -25,8 +28,14 @@ While Not table.EndOfTable
         Dim duration As Integer
         duration = prop.Value
         totalduration = totalduration + duration
+        If duration > 15 Then bigtasks = bigtasks + 1 Else smalltasks = smalltasks + 1
     End If
       
 Wend
-    MsgBox "Total time for tasks is " & totalduration & "Min or " & totalduration / 60 & "Hr"
+Dim switchtime, totaltime As Integer
+switchtime = 15 * bigtasks + 5 * smalltasks
+totaltime = switchtime + totalduration
+    MsgBox "Total time for tasks is " & totalduration & "Min or " & totalduration / 60 & "Hr" & vbCrLf & _
+    bigtasks & " big tasks. " & smalltasks & " small tasks. Switch time " & switchtime & "min." & vbCrLf & _
+    "Total time spending for today is " & totaltime & "min or " & totaltime / 60 & "H"
 End Sub
